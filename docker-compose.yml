@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: stock-service
+    build: 
+      context: .
+      dockerfile: ./docker/golang/Dockerfile
+    volumes: 
+      - ./app:/go/src/app
+    tty: true 
+    depends_on:
+      - db
+    ports:
+      - 8081:8081
+    networks:
+      - stock-network
+  db:
+    container_name: stock-postgres
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    environment:
+      - POSTGRES_DB=${PSQL_DBNAME}
+      - POSTGRES_USER=${PSQL_USER}
+      - POSTGRES_PASSWORD=${PSQL_PASS}
+    volumes:
+      - db-store:/var/lib/postgresql/data
+    ports:
+      - ${PSQL_PORT}:5433
+    networks:
+      - stock-network
+volumes:
+  db-store:
+networks:
+  stock-network:
+    external: true
