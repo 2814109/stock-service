@@ -44,10 +44,10 @@ func main() {
 	fmt.Println(v)
 	log.Printf("success %v", db)
 
-	if _, err := db.NewCreateTable().Model((*Post)(nil)).Exec(context.Background()); err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("create table")
+	// if _, err := db.NewCreateTable().Model((*Post)(nil)).Exec(context.Background()); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("create table")
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -55,13 +55,7 @@ func main() {
 	}
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
-	// router := bunrouter.New()
-
-	// router.GET("/", func(w http.ResponseWriter, req bunrouter.Request) error {
-	// 	// req embeds *http.Request and has all the same fields and methods
-	// 	fmt.Println(req.Method, req.Route(), req.Params().Map())
-	// 	return w.playground.Handler("GraphQL playground", "/query")
-	// })
+	handler := cors.Default().Handler(srv)
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 

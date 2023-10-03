@@ -7,6 +7,10 @@ type NewTodo struct {
 	UserID string `json:"userId"`
 }
 
+type Sample struct {
+	ID string `json:"id"`
+}
+
 type Todo struct {
 	ID   string `json:"id"`
 	Text string `json:"text"`
