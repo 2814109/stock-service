@@ -27,6 +27,16 @@ input NewTodo {
   userId: String!
 }
 
+input NewPost {
+  id: ID!
+  Content: String!
+}
+
+type Result {
+  response: Boolean!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
+  createPost(input: NewPost!): Result!
 }

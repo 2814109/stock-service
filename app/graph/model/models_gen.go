@@ -2,9 +2,18 @@
 
 package model
 
+type NewPost struct {
+	ID      string `json:"id"`
+	Content string `json:"Content"`
+}
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`
+}
+
+type Result struct {
+	Response bool `json:"response"`
 }
 
 type Sample struct {
