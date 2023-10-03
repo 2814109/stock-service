@@ -1,0 +1,25 @@
+type Mutation {
+  createTodo(input: NewTodo!): Todo!
+  createPost(input: NewPost!): Result!
+}
+
+input NewTodo {
+  text: String!
+  userId: String!
+}
+
+input NewPost {
+  id: ID!
+  Content: String!
+}
+
+type Result {
+  response: Boolean!
+}
+
+type Todo {
+  id: ID!
+  text: String!
+  done: Boolean!
+  user: User!
+}
