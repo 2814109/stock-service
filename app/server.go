@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -22,6 +23,13 @@ import (
 
 const defaultPort = "8081"
 
+type Post struct {
+	ID        int64 `bun:",pk,autoincrement"`
+	Content   string
+	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+	UpdatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+}
+
 func main() {
 
 	dsn := "postgres://postgres:postgres@stock-postgres:5433/postgres?sslmode=disable"
@@ -35,6 +43,11 @@ func main() {
 	}
 	fmt.Println(v)
 	log.Printf("success %v", db)
+
+	if _, err := db.NewCreateTable().Model((*Post)(nil)).Exec(context.Background()); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("create table")
 
 	port := os.Getenv("PORT")
 	if port == "" {
