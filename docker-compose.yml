@@ -30,6 +30,7 @@ services:
       - ${PSQL_PORT}:5433
     networks:
       - stock-network
+    command: -p 5433
 volumes:
   db-store:
 networks:
