@@ -17,7 +17,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // CreatePost is the resolver for the createPost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Result, error) {
-	panic(fmt.Errorf("not implemented: CreatePost - createPost"))
+	return &model.Result{Response: true}, nil
 }
 
 // Mutation returns MutationResolver implementation.
