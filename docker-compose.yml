@@ -17,6 +17,7 @@ services:
       - stock-network
     environment:
       - QIITA_USER_NAME=${QIITA_USER_NAME}
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
   db:
     container_name: stock-postgres
     build:
