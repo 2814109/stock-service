@@ -30,9 +30,8 @@ func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) 
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
 	db := bun.NewDB(sqldb, pgdialect.New())
-
 	post := &types.Post{Content: input.Content}
-	_, err := db.NewInsert().Model(post).Exec(context.Background())
+	_, err := db.NewInsert().Model(post).Exec(ctx)
 	if err != nil {
 		return &model.Result{Response: false}, err
 
