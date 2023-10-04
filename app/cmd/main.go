@@ -64,4 +64,13 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("create table of %v", "Post")
+
+	post := &Post{Content: "post content"}
+	insertRes, err := db.NewInsert().Model(post).Exec(context.Background())
+	if err != nil {
+		log.Fatal(err)
+
+	}
+	log.Printf("success %v", insertRes)
+
 }
