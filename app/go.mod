@@ -5,6 +5,7 @@ go 1.21.1
 require (
 	github.com/99designs/gqlgen v0.17.38
 	github.com/lib/pq v1.10.9
+	github.com/rs/cors v1.10.1
 	github.com/uptrace/bun v1.1.16
 	github.com/uptrace/bun/dialect/pgdialect v1.1.16
 	github.com/uptrace/bun/driver/pgdriver v1.1.16
