@@ -7,6 +7,7 @@ package graph
 import (
 	"app/db"
 	"app/graph/model"
+	"app/infrastructures/api_client"
 	"app/types"
 	"context"
 	"fmt"
@@ -21,18 +22,14 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // CreatePost is the resolver for the createPost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Result, error) {
-	// dsn := "postgres://postgres:postgres@stock-postgres:5433/postgres?sslmode=disable"
-	// sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
-
-	// db := bun.NewDB(sqldb, pgdialect.New())
 	db := db.OpenDB()
-
 	post := &types.Post{Content: input.Content}
 	_, err := db.NewInsert().Model(post).Exec(ctx)
 	if err != nil {
 		return &model.Result{Response: false}, err
-
 	}
+
+	api_client.Main(ctx)
 	return &model.Result{Response: true}, nil
 }
 

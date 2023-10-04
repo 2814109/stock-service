@@ -29,10 +29,6 @@ const defaultPort = "8081"
 
 func main() {
 
-	// if _, err := db.NewCreateTable().Model((*Post)(nil)).Exec(context.Background()); err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println("create table")
 	db := db.OpenDB()
 	if err := db.Ping(); err != nil {
 		log.Fatal(err)
@@ -47,6 +43,9 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
+	qiita_user_name := os.Getenv("QIITA_USER_NAME")
+	log.Printf("user name is %s", qiita_user_name)
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
+
 }
