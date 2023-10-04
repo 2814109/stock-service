@@ -5,8 +5,9 @@ import (
 
 	// "context"
 	// "fmt"
+	"app/db"
 	"app/graph"
-	"database/sql"
+
 	"log"
 	"net/http"
 	"os"
@@ -17,30 +18,25 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-
 	// "database/sql"
 	// _ "github.com/lib/pq"
 	// "github.com/uptrace/bun"
 	// "github.com/uptrace/bun/dialect/pgdialect"
 	// "github.com/uptrace/bun/driver/pgdriver"
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/dialect/pgdialect"
-	"github.com/uptrace/bun/driver/pgdriver"
 )
 
 const defaultPort = "8081"
 
 func main() {
-	dsn := "postgres://postgres:postgres@stock-postgres:5433/postgres?sslmode=disable"
-	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
-
-	bun.NewDB(sqldb, pgdialect.New())
 
 	// if _, err := db.NewCreateTable().Model((*Post)(nil)).Exec(context.Background()); err != nil {
 	// 	log.Fatal(err)
 	// }
 	// fmt.Println("create table")
-
+	db := db.OpenDB()
+	if err := db.Ping(); err != nil {
+		log.Fatal(err)
+	}
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
