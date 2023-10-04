@@ -6,8 +6,17 @@ package graph
 
 import (
 	"app/graph/model"
+	"app/types"
 	"context"
 	"fmt"
+
+	"database/sql"
+
+	_ "github.com/lib/pq"
+
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/pgdialect"
+	"github.com/uptrace/bun/driver/pgdriver"
 )
 
 // CreateTodo is the resolver for the createTodo field.
@@ -17,6 +26,17 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // CreatePost is the resolver for the createPost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Result, error) {
+	dsn := "postgres://postgres:postgres@stock-postgres:5433/postgres?sslmode=disable"
+	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
+
+	db := bun.NewDB(sqldb, pgdialect.New())
+
+	post := &types.Post{Content: input.Content}
+	_, err := db.NewInsert().Model(post).Exec(context.Background())
+	if err != nil {
+		return &model.Result{Response: false}, err
+
+	}
 	return &model.Result{Response: true}, nil
 }
 

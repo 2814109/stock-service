@@ -3,9 +3,11 @@ package main
 import (
 	// "app/graph"
 	// "github.com/uptrace/bunrouter"
+	"app/types"
 	"context"
 	"fmt"
 	"log"
+
 	// "net/http"
 	// "os"
 	"time"
@@ -14,19 +16,13 @@ import (
 	// "github.com/99designs/gqlgen/graphql/playground"
 
 	"database/sql"
+
 	_ "github.com/lib/pq"
 
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
 )
-
-type Post struct {
-	ID        int64 `bun:",pk,autoincrement"`
-	Content   string
-	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-	UpdatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-}
 
 type Sample struct {
 	ID        int64 `bun:",pk,autoincrement"`
@@ -53,19 +49,19 @@ func main() {
 	// }
 	// fmt.Printf("create table of %v", "Sample")
 
-	res, err := db.NewDropTable().Model((*Post)(nil)).Exec(context.Background())
+	res, err := db.NewDropTable().Model((*types.Post)(nil)).Exec(context.Background())
 
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("success %v", res)
 
-	if _, err := db.NewCreateTable().Model((*Post)(nil)).Exec(context.Background()); err != nil {
+	if _, err := db.NewCreateTable().Model((*types.Post)(nil)).Exec(context.Background()); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("create table of %v", "Post")
 
-	post := &Post{Content: "post content"}
+	post := &types.Post{Content: "post content"}
 	insertRes, err := db.NewInsert().Model(post).Exec(context.Background())
 	if err != nil {
 		log.Fatal(err)
