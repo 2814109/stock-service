@@ -48,10 +48,17 @@ func main() {
 	fmt.Println(v)
 	log.Printf("success %v", db)
 
-	if _, err := db.NewCreateTable().Model((*Sample)(nil)).Exec(context.Background()); err != nil {
+	// if _, err := db.NewCreateTable().Model((*Sample)(nil)).Exec(context.Background()); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Printf("create table of %v", "Sample")
+
+	res, err := db.NewDropTable().Model((*Post)(nil)).Exec(context.Background())
+
+	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("create table of %v", "Sample")
+	log.Printf("success %v", res)
 
 	if _, err := db.NewCreateTable().Model((*Post)(nil)).Exec(context.Background()); err != nil {
 		log.Fatal(err)
